@@ -1,3 +1,8 @@
+require('dotenv').config();
+const {
+  API_BASE_URI,
+} = process.env;
+
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -24,7 +29,9 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+    '~/lib/config',
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -56,4 +63,8 @@ export default {
 
   publicRuntimeConfig: {
   },
+  env : {
+    API_BASE_URI,
+  }
+
 }
