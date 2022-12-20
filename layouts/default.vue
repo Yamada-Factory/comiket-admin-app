@@ -53,6 +53,11 @@ export default {
           icon: 'lightbulb',
           to: { name: 'inspire' },
         },
+        {
+          title: '設定',
+          icon: 'cog',
+          to: { name: 'login' },
+        },
       ],
     }
   },
