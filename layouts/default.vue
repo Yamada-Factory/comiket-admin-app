@@ -1,39 +1,48 @@
 <template>
   <div>
-    <nav
-      class="navbar header has-shadow is-primary"
-      role="navigation"
-      aria-label="main navigation"
-    >
-      <div class="navbar-brand">
-        <a class="navbar-item" href="/">
-          <img src="~assets/buefy.png" alt="Buefy" height="28" />
-        </a>
+    <b-navbar class="is-primary">
+      <template #brand>
+        <b-navbar-item tag="router-link" :to="{ path: '/' }">
+          Comiket Admin
+        </b-navbar-item>
+      </template>
+      <template #start>
+        <b-navbar-item href="/">
+          TOP
+        </b-navbar-item>
+        <b-navbar-item href="/circle/list">
+          サークル一覧
+        </b-navbar-item>
+        <b-navbar-item href="/event/list">
+          イベント一覧
+        </b-navbar-item>
+        <b-navbar-dropdown label="Info">
+          <b-navbar-item href="#">
+            About
+          </b-navbar-item>
+          <b-navbar-item href="#">
+            Contact
+          </b-navbar-item>
+        </b-navbar-dropdown>
+      </template>
 
-        <div class="navbar-burger">
-          <span />
-          <span />
-          <span />
-        </div>
-      </div>
-    </nav>
+      <template #end>
+        <b-navbar-item tag="div">
+          <div class="buttons">
+            <!-- <a class="button is-primary">
+              <strong>Sign up</strong>
+            </a> -->
+            <a class="button is-primary" href="/login">
+              Log in
+            </a>
+          </div>
+        </b-navbar-item>
+      </template>
+    </b-navbar>
 
-    <section class="main-content columns">
-      <aside class="column is-2 section">
-        <p class="menu-label is-hidden-touch">General</p>
-        <ul class="menu-list">
-          <li v-for="(item, key) of items" :key="key">
-            <NuxtLink :to="item.to" exact-active-class="is-active">
-              <b-icon :icon="item.icon" /> {{ item.title }}
-            </NuxtLink>
-          </li>
-        </ul>
-      </aside>
-
-      <div class="container column is-10">
-        <Nuxt />
-      </div>
-    </section>
+    <div class="container column is-10">
+      <Nuxt />
+    </div>
   </div>
 </template>
 
@@ -49,9 +58,9 @@ export default {
           to: { name: 'index' },
         },
         {
-          title: 'Inspire',
+          title: 'circle',
           icon: 'lightbulb',
-          to: { name: 'inspire' },
+          to: { name: 'circle/list' },
         },
         {
           title: '設定',
