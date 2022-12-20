@@ -29,13 +29,13 @@
               </div>
             </div>
             <footer class="card-footer" v-show="isAuth">
-              <template v-if="isInFavorite(circle.circle_ms_id)">
+              <template v-if="circle.isFavorite">
                 <a href="#" class="card-footer-item">
                   <b-icon icon="thumb-up" type="is-danger"></b-icon>
                 </a>
               </template>
               <template v-else>
-                <a href="#" class="card-footer-item">
+                <a class="card-footer-item" @click="addFavoriteCircle(circle.circle_id)">
                   <b-icon icon="thumb-up-outline" type="is-info"></b-icon>
                 </a>
               </template>
@@ -67,7 +67,8 @@ export default {
       page: [],
       favorite: [],
       isAuth: CookieStorage.get('is_auth') || false,
-      favoriteCircleMsIds: [],
+      favoriteCircleIds: [],
+      eventId: 0,
     }
   },
   async asyncData({ route, params }) {
@@ -75,9 +76,21 @@ export default {
     const previousParams = Object.assign({}, route.query)
 
     const data = await Event.getCircle(params.id, route.query)
+    const eventId = params.id
 
-    const favorite = await User.getFavoriteCirlceEvent(params.id, route.query)
-    const favoriteCircleMsIds = favorite.map(p => parseInt(p.circle_ms_id))
+    let favorite = await User.getFavoriteCirlceEvent(params.id, route.query)
+    if (favorite.status) {
+      favorite = []
+    }
+    const favoriteCircleIds = favorite.map(p => parseInt(p.circle_id))
+
+    for(let i=0; i<data.length; i++) {
+      if (favoriteCircleIds.includes(data[i].circle_id)) {
+        data[i].isFavorite = true
+      } else {
+        data[i].isFavorite = false
+      }
+    }
 
 
     const previous = parseInt(route.query.page || 1) - 1
@@ -95,12 +108,48 @@ export default {
       }
     }
 
-    return { data, page, favorite, favoriteCircleMsIds }
+    return { data, page, favorite, favoriteCircleIds, eventId }
   },
   methods: {
-    isInFavorite(circleId) {
-      return this.favoriteCircleMsIds.includes(parseInt(circleId))
-    }
+    async refreshFavorite() {
+      const favorite = await User.getFavoriteCirlceEvent(this.eventId)
+      this.favoriteCircleIds = favorite.map(p => parseInt(p.circle_id))
+
+      for(let i=0; i<this.data.length; i++) {
+        if (this.favoriteCircleIds.includes(this.data[i].circle_id)) {
+          this.data[i].isFavorite = true
+        } else {
+          this.data[i].isFavorite = false
+        }
+      }
+    },
+    async addFavoriteCircle(circleId) {
+      const response = await User.addFavoriteCircleEvent(this.eventId, {
+        'circle_id': parseInt(circleId),
+        'event_id': parseInt(this.eventId),
+      })
+      if ((response.status || 200) === 200) {
+        this.success()
+      } else {
+        this.danger()
+      }
+
+      this.refreshFavorite()
+    },
+    success() {
+      this.$buefy.toast.open({
+        message: '登録に成功しました',
+        type: 'is-success',
+        duration: 5000,
+      })
+    },
+    danger() {
+      this.$buefy.toast.open({
+        duration: 5000,
+        message: `登録に失敗しました`,
+        type: 'is-danger'
+      })
+    },
   },
 }
 </script>
