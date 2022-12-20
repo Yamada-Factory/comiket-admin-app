@@ -28,8 +28,17 @@
                 </template>
               </div>
             </div>
-            <footer class="card-footer">
-              <a href="#" class="card-footer-item"><b-icon icon="thumb-up-outline" type="is-info"></b-icon></a>
+            <footer class="card-footer" v-show="isAuth">
+              <template v-if="isInFavorite(circle.circle_ms_id)">
+                <a href="#" class="card-footer-item">
+                  <b-icon icon="thumb-up" type="is-danger"></b-icon>
+                </a>
+              </template>
+              <template v-else>
+                <a href="#" class="card-footer-item">
+                  <b-icon icon="thumb-up-outline" type="is-info"></b-icon>
+                </a>
+              </template>
             </footer>
           </div>
         </div>
@@ -47,6 +56,7 @@
 </template>
 
 <script>
+import CookieStorage from '@/lib/CookieStorage'
 import Event from '@/lib/Event'
 import User from '@/lib/User'
 
@@ -56,6 +66,8 @@ export default {
       data: [],
       page: [],
       favorite: [],
+      isAuth: CookieStorage.get('is_auth') || false,
+      favoriteCircleMsIds: [],
     }
   },
   async asyncData({ route, params }) {
@@ -65,7 +77,7 @@ export default {
     const data = await Event.getCircle(params.id, route.query)
 
     const favorite = await User.getFavoriteCirlceEvent(params.id, route.query)
-    console.log(favorite)
+    const favoriteCircleMsIds = favorite.map(p => parseInt(p.circle_ms_id))
 
 
     const previous = parseInt(route.query.page || 1) - 1
@@ -83,7 +95,12 @@ export default {
       }
     }
 
-    return { data, page, favorite }
-  }
+    return { data, page, favorite, favoriteCircleMsIds }
+  },
+  methods: {
+    isInFavorite(circleId) {
+      return this.favoriteCircleMsIds.includes(parseInt(circleId))
+    }
+  },
 }
 </script>

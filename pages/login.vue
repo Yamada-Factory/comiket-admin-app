@@ -36,10 +36,11 @@ export default {
       const user = await User.getUserInfo()
       if (user.status || 200 === 401) {
         this.danger()
+        CookieStorage.set('is_auth', false)
       } else {
         this.success(user.name)
+        CookieStorage.set('is_auth', true)
       }
-      console.log(user)
     },
     success(userName) {
       this.$buefy.toast.open({
