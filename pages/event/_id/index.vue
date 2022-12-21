@@ -1,8 +1,8 @@
 <template>
   <section class="section">
     <template>
-      <div class="columns is-4 is-multiline">
-        <div class="column is-one-fifth" v-for="circle in data" :key="circle.name">
+      <div class="columns is-4 is-multiline is-mobile">
+        <div class="column is-6-mobile is-3-tablet is-3-desktop is-2-fullhd" v-for="circle in data" :key="circle.name">
           <div class="card-image" v-if="circle.images && circle.images.length">
             <figure class="image">
               <img :src="'https://s3-yamada-01.misosiru.men/comiket-app-dev' + circle.images[0]" alt="Placeholder image">
