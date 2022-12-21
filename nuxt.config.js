@@ -14,7 +14,7 @@ export default {
   head: {
     title: 'comiket-admin-app',
     htmlAttrs: {
-      lang: 'en',
+      lang: 'ja',
     },
     meta: [
       { charset: 'utf-8' },
