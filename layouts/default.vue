@@ -16,6 +16,9 @@
         <b-navbar-item href="/event/list">
           イベント一覧
         </b-navbar-item>
+        <b-navbar-item href="/user/circle/">
+          お気に入り
+        </b-navbar-item>
         <b-navbar-dropdown label="Info">
           <b-navbar-item href="#">
             About
