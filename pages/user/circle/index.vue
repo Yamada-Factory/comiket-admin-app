@@ -4,7 +4,7 @@
       <template>
         <b-table :data="data">
           <b-table-column v-slot="props" field="id" label="ID" numeric>
-            {{ props.row.id }}
+            <nuxt-link :to="`/user/circle/${props.row.id}`">{{ props.row.id }}</nuxt-link>
           </b-table-column>
 
           <b-table-column v-slot="props" field="name" label="サークル名">
@@ -44,11 +44,11 @@
           </b-table-column>
 
           <!-- loginしているとき -->
-          <!-- <b-table-column field="color" label="">
-            <section>
-              <b-icon icon="thumb-up" style="color: #1AB741"></b-icon>
-            </section>
-          </b-table-column> -->
+          <b-table-column v-slot="props" field="color" label="">
+              <section>
+                <b-icon icon="thumb-up" :style="'color: '+ props.row.color"></b-icon>
+              </section>
+            </b-table-column>
         </b-table>
       </template>
     </template>
@@ -56,8 +56,8 @@
     <div class="container" style="margin-top: 50px;">
       <div class="columns is-mobile is-centered">
         <div class="buttons">
-          <b-button type="is-primary" tag="a" :href="'/circle/list?page=' + page.previous">← {{ page.previous }}</b-button>
-          <b-button type="is-primary" tag="a" :href="'/circle/list?page=' + page.next">{{ page.next }} →</b-button>
+          <b-button type="is-primary" tag="a" :href="'/user/circle?page=' + page.previous">← {{ page.previous }}</b-button>
+          <b-button type="is-primary" tag="a" :href="'/user/circle?page=' + page.next">{{ page.next }} →</b-button>
         </div>
       </div>
     </div>
@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import Circle from '~/lib/Circle'
+import User from '@/lib/User'
 
 export default {
   data() {
@@ -76,8 +76,11 @@ export default {
       query: {}
     }
   },
-  async asyncData({ route }) {
-    const data = await Circle.get(route.query)
+  async asyncData({ route, redirect }) {
+    const data = await User.getFavoriteCircles(route.query)
+    if (data.status) {
+      return redirect('/login')
+    }
 
     const previous = parseInt(route.query.page || 1) - 1
 
