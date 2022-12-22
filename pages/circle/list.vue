@@ -44,11 +44,11 @@
           </b-table-column>
 
           <!-- loginしているとき -->
-          <b-table-column field="color" label="">
+          <!-- <b-table-column field="color" label="">
             <section>
               <b-icon icon="thumb-up" style="color: #1AB741"></b-icon>
             </section>
-          </b-table-column>
+          </b-table-column> -->
         </b-table>
       </template>
     </template>
