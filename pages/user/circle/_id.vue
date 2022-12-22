@@ -111,6 +111,20 @@
                     </section>
                   </div>
                 </div>
+                <div class="card-footer">
+                  <div class="card-footer-item">
+                    <b-field label="優先度">
+                        <b-numberinput v-model="form[event.name].priority"></b-numberinput>
+                    </b-field>
+                  </div>
+                  <div class="card-footer-item">
+                    <b-field>
+                      <b-checkbox :value="form[event.name].isEc">
+                          通販フラグ
+                      </b-checkbox>
+                    </b-field>
+                  </div>
+                </div>
               </div>
             </b-tab-item>
           </b-tabs>
@@ -161,6 +175,7 @@ export default {
       query: {},
       radioButton: '',
       images: {},
+      form: {},
     }
   },
   async asyncData({ route, params, redirect }) {
@@ -171,9 +186,14 @@ export default {
     console.log(data)
 
     const images = {}
+    const form = {}
 
     data.event.forEach(event => {
       images[event.name] = []
+      form[event.name] = {
+        'priority': event.priority,
+        'isEc': event['e-commerce_flag'],
+      }
       event.info.images.forEach(image => {
         if (image.length) {
           images[event.name].push(image)
@@ -191,7 +211,7 @@ export default {
 
     const query = route.query
 
-    return { data, query, selectColor, images }
+    return { data, query, selectColor, images, form }
   }
 }
 </script>
