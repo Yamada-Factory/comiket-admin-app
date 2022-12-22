@@ -99,14 +99,12 @@
                         <p>{{ event.info.description }}</p>
                       </b-field>
 
-                      <div class="card-image columns is-mobile" v-if="images[event.name] && images[event.name].length">
-                        <!-- <div class="columns is-0 is-multiline">
-                          <div class="column is-6-mobile is-6-tablet is-3-desktop" v-for="(image, index) in images[event.name]" :key="index"> -->
-                            <div class="image column is-6-mobile is-3-tablet is-3-desktop" v-for="(image, index) in images[event.name]" :key="index">
-                              <img :src="'https://s3-yamada-01.misosiru.men/comiket-app-dev' + event.info.images[0]" alt="Placeholder image">
-                            </div>
-                          <!-- </div>
-                        </div> -->
+                      <div class="columns is-mobile is-1 is-multiline" v-if="images[event.name] && images[event.name].length">
+                        <img
+                          :src="'https://s3-yamada-01.misosiru.men/comiket-app-dev' + event.info.images[0]"
+                          alt="Placeholder image"
+                          class="column is-6-mobile is-3-tablet is-2-desktop"
+                          v-for="(image, index) in images[event.name]" :key="index">
                       </div>
                     </section>
                   </div>
