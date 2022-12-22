@@ -101,7 +101,7 @@
 
                       <div class="columns is-mobile is-1 is-multiline" v-if="images[event.name] && images[event.name].length">
                         <img
-                          :src="'https://s3-yamada-01.misosiru.men/comiket-app-dev' + event.info.images[0]"
+                          :src="'https://s3-yamada-01.misosiru.men/comiket-app-dev' + image"
                           alt="Placeholder image"
                           class="column is-6-mobile is-3-tablet is-2-desktop"
                           v-for="(image, index) in images[event.name]" :key="index">
