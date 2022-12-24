@@ -1,6 +1,64 @@
 <template>
   <section class="section">
-    <template>
+    <div>
+      <section class="container">
+        <b-collapse class="card" animation="slide" aria-id="contentIdForA11y3">
+          <template #trigger="props">
+            <div class="card-header" role="button" aria-controls="contentIdForA11y3" :aria-expanded="props.open">
+              <p class="card-header-title">
+                検索オプション
+              </p>
+              <a class="card-header-icon">
+                <b-icon :icon="props.open ? 'menu-down' : 'menu-up'">
+                </b-icon>
+              </a>
+            </div>
+          </template>
+
+          <div class="card-content">
+            <div class="content">
+              <b-field grouped>
+                <b-field label="">
+                  <b-select placeholder="ジャンル" v-model="search.genre">
+                    <option value=""></option>
+                    <option
+                        v-for="(genre, index) in genres"
+                        :key="index">
+                        {{ genre }}
+                    </option>
+                  </b-select>
+                </b-field>
+                <b-field label="">
+                  <b-select placeholder="ホール" v-model="search.hall">
+                    <option value=""></option>
+                    <option
+                        v-for="(hall, index) in halls"
+                        :key="index">
+                        {{ hall }}
+                    </option>
+                  </b-select>
+                </b-field>
+                <b-field label="">
+                  <b-select placeholder="ブロック" v-model="search.block">
+                    <option value=""></option>
+                    <option
+                        v-for="(block, index) in blocks"
+                        :key="index">
+                        {{ block }}
+                    </option>
+                  </b-select>
+                </b-field>
+              </b-field>
+            </div>
+          </div>
+          <footer class="card-footer">
+            <b-button class="card-footer-item" @click="goSearch()">検索</b-button>
+          </footer>
+        </b-collapse>
+      </section>
+    </div>
+
+    <div class="container" style="margin-top: 50px;">
       <div class="columns is-4 is-multiline is-mobile">
         <div class="column is-6-mobile is-3-tablet is-3-desktop is-2-fullhd" v-for="circle in data" :key="circle.name">
           <div class="card-image" v-if="circle.images && circle.images.length">
@@ -43,7 +101,7 @@
           </div>
         </div>
       </div>
-    </template>
+    </div>
     <div class="container" style="margin-top: 50px;">
       <div class="columns is-mobile is-centered">
         <div class="buttons">
@@ -69,6 +127,10 @@ export default {
       isAuth: CookieStorage.get('is_auth') || false,
       favoriteCircleIds: [],
       eventId: 0,
+      search: {},
+      genres: [],
+      halls: [],
+      blocks: [],
     }
   },
   async asyncData({ route, params }) {
@@ -108,7 +170,13 @@ export default {
       }
     }
 
-    return { data, page, favorite, favoriteCircleIds, eventId }
+    const search = route.query
+
+    const genres =await Event.getGenre(params.id)
+    const halls =await Event.getHall(params.id)
+    const blocks =await Event.getBlock(params.id)
+
+    return { data, page, favorite, favoriteCircleIds, eventId, search, genres, halls, blocks }
   },
   methods: {
     async refreshFavorite() {
@@ -150,6 +218,14 @@ export default {
         type: 'is-danger'
       })
     },
+    goSearch() {
+      Object.keys(this.search).forEach(key => {
+        if (this.search[key].length === 0) delete this.search[key];
+      });
+      const url = '/event/' + String(this.eventId) + '?' + new URLSearchParams(this.search).toString()
+      window.location.href = url
+      return this.$router.push(url)
+    }
   },
 }
 </script>
