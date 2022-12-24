@@ -58,7 +58,7 @@
                     <div class="content">
                       <p class="title is-6">お気に入り</p>
                       <div class="columns">
-                        <b-radio-button v-for="color in colors" :key="color.name" v-model="selectColor" :native-value="color.value" type="is-info" class="column is-2">
+                        <b-radio-button v-for="color in colors" :key="color.name" v-model="selectColor" :native-value="color.value" type="is-info" class="column is-2" @input="updateFavoriteColor">
                           <b-icon icon="thumb-up" :style="'color: ' + color.value"></b-icon>
                         </b-radio-button>
                       </div>
@@ -174,6 +174,33 @@ export default {
       radioButton: '',
       images: {},
       form: {},
+      circleId: 0,
+    }
+  },
+  methods: {
+    success(message) {
+      this.$buefy.toast.open({
+        message,
+        type: 'is-success',
+        duration: 5000,
+      })
+    },
+    danger(message) {
+      this.$buefy.toast.open({
+        duration: 5000,
+        message,
+        type: 'is-danger'
+      })
+    },
+    async updateFavoriteColor() {
+      const data = await User.updateFavoriteCircle({
+        'circle_id': this.circleId,
+        'color': this.selectColor
+      })
+      if (data.status) {
+        return this.danger('更新失敗しました')
+      }
+      return this.success('更新')
     }
   },
   async asyncData({ route, params, redirect }) {
@@ -209,7 +236,9 @@ export default {
 
     const query = route.query
 
-    return { data, query, selectColor, images, form }
+    const circleId = params.id
+
+    return { data, query, selectColor, images, form, circleId }
   }
 }
 </script>
