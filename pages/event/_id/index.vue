@@ -17,37 +17,31 @@
 
           <div class="card-content">
             <div class="content">
-              <b-field grouped>
-                <b-field label="">
-                  <b-select placeholder="ジャンル" v-model="search.genre">
-                    <option value=""></option>
-                    <option
-                        v-for="(genre, index) in genres"
-                        :key="index">
-                        {{ genre }}
-                    </option>
-                  </b-select>
-                </b-field>
-                <b-field label="">
-                  <b-select placeholder="ホール" v-model="search.hall">
-                    <option value=""></option>
-                    <option
-                        v-for="(hall, index) in halls"
-                        :key="index">
-                        {{ hall }}
-                    </option>
-                  </b-select>
-                </b-field>
-                <b-field label="">
-                  <b-select placeholder="ブロック" v-model="search.block">
-                    <option value=""></option>
-                    <option
-                        v-for="(block, index) in blocks"
-                        :key="index">
-                        {{ block }}
-                    </option>
-                  </b-select>
-                </b-field>
+              <b-field grouped group-multiline>
+                <b-select placeholder="ジャンル" v-model="search.genre">
+                  <option value=""></option>
+                  <option
+                      v-for="(genre, index) in genres"
+                      :key="index">
+                      {{ genre }}
+                  </option>
+                </b-select>
+                <b-select placeholder="ホール" v-model="search.hall">
+                  <option value=""></option>
+                  <option
+                      v-for="(hall, index) in halls"
+                      :key="index">
+                      {{ hall }}
+                  </option>
+                </b-select>
+                <b-select placeholder="ブロック" v-model="search.block">
+                  <option value=""></option>
+                  <option
+                      v-for="(block, index) in blocks"
+                      :key="index">
+                      {{ block }}
+                  </option>
+                </b-select>
               </b-field>
             </div>
           </div>
