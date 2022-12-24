@@ -68,7 +68,7 @@
               </div>
             </b-tab-item>
 
-            <b-tab-item v-for="event in data.event" :key="event.id" label="イベント参加情報" >
+            <b-tab-item v-for="(event, eventIndex) in data.event" :key="eventIndex" label="イベント参加情報" >
               <div class="card">
                 <header class="card-header">
                   <p class="card-header-title">
@@ -99,12 +99,12 @@
                         <p>{{ event.info.description }}</p>
                       </b-field>
 
-                      <div class="columns is-mobile is-1 is-multiline" v-if="images[event.name] && images[event.name].length">
+                      <div class="columns is-mobile is-1 is-multiline" v-if="images[eventIndex] && images[eventIndex].length">
                         <img
                           :src="'https://s3-yamada-01.misosiru.men/comiket-app-dev' + image"
                           alt="Placeholder image"
                           class="column is-6-mobile is-3-tablet is-2-desktop"
-                          v-for="(image, index) in images[event.name]" :key="index">
+                          v-for="(image, index) in images[eventIndex]" :key="index">
                       </div>
                     </section>
                   </div>
@@ -112,12 +112,12 @@
                 <div class="card-footer">
                   <div class="card-footer-item">
                     <b-field label="優先度">
-                        <b-numberinput v-model="form[event.name].priority"></b-numberinput>
+                        <b-numberinput v-model="form[eventIndex].priority" @input="updatePriority(eventIndex)"></b-numberinput>
                     </b-field>
                   </div>
                   <div class="card-footer-item">
                     <b-field>
-                      <b-checkbox :value="form[event.name].isEc">
+                      <b-checkbox v-model="form[eventIndex]['e-commerce_flag']" @input="updatePriority(eventIndex)">
                           通販フラグ
                       </b-checkbox>
                     </b-field>
@@ -201,6 +201,19 @@ export default {
         return this.danger('更新失敗しました')
       }
       return this.success('更新')
+    },
+    async updatePriority(eventIndex) {
+      const event = this.form[eventIndex]
+
+      const data = await User.updateFavoriteCircleEvent(event.event_id, {
+        'priority': event.priority,
+        'e-commerce_flag': event['e-commerce_flag'],
+        'circle_id': this.circleId,
+      })
+      if (data.status) {
+        return this.danger('更新失敗しました')
+      }
+      return this.success('更新')
     }
   },
   async asyncData({ route, params, redirect }) {
@@ -210,25 +223,27 @@ export default {
     }
     console.log(data)
 
-    const images = {}
-    const form = {}
+    const images = []
+    const form = []
 
     data.event.forEach(event => {
-      images[event.name] = []
-      form[event.name] = {
+      const tmpImage = []
+      form.push({
         'priority': event.priority,
-        'isEc': event['e-commerce_flag'],
-      }
+        'e-commerce_flag': event['e-commerce_flag'],
+        'event_id': event.id,
+      })
       event.info.images.forEach(image => {
         if (image.length) {
-          images[event.name].push(image)
+          tmpImage.push(image)
         } else if ('既定表示画像' in image && 'サムネイル画像' in image) {
           if (image['既定表示画像']) {
-            images[event.name].push(image['既定表示画像'])
+            tmpImage.push(image['既定表示画像'])
           } else if (image['サムネイル画像']) {
-            images[event.name].push(image['サムネイル画像'])
+            tmpImage.push(image['サムネイル画像'])
           }
         }
+        images.push(tmpImage)
       });
     })
 
