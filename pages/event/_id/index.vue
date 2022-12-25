@@ -20,26 +20,20 @@
               <b-field grouped group-multiline>
                 <b-select placeholder="ジャンル" v-model="search.genre">
                   <option value=""></option>
-                  <option
-                      v-for="(genre, index) in genres"
-                      :key="index">
-                      {{ genre }}
+                  <option v-for="(genre, index) in genres" :key="index">
+                    {{ genre }}
                   </option>
                 </b-select>
                 <b-select placeholder="ホール" v-model="search.hall">
                   <option value=""></option>
-                  <option
-                      v-for="(hall, index) in halls"
-                      :key="index">
-                      {{ hall }}
+                  <option v-for="(hall, index) in halls" :key="index">
+                    {{ hall }}
                   </option>
                 </b-select>
                 <b-select placeholder="ブロック" v-model="search.block">
                   <option value=""></option>
-                  <option
-                      v-for="(block, index) in blocks"
-                      :key="index">
-                      {{ block }}
+                  <option v-for="(block, index) in blocks" :key="index">
+                    {{ block }}
                   </option>
                 </b-select>
               </b-field>
@@ -140,7 +134,7 @@ export default {
     }
     const favoriteCircleIds = favorite.map(p => parseInt(p.circle_id))
 
-    for(let i=0; i<data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
       if (favoriteCircleIds.includes(data[i].circle_id)) {
         data[i].isFavorite = true
       } else {
@@ -166,9 +160,9 @@ export default {
 
     const search = route.query
 
-    const genres =await Event.getGenre(params.id)
-    const halls =await Event.getHall(params.id)
-    const blocks =await Event.getBlock(params.id)
+    const genres = await Event.getGenre(params.id)
+    const halls = await Event.getHall(params.id)
+    const blocks = await Event.getBlock(params.id)
 
     return { data, page, favorite, favoriteCircleIds, eventId, search, genres, halls, blocks }
   },
@@ -177,7 +171,7 @@ export default {
       const favorite = await User.getFavoriteCirlceEvent(this.eventId)
       this.favoriteCircleIds = favorite.map(p => parseInt(p.circle_id))
 
-      for(let i=0; i<this.data.length; i++) {
+      for (let i = 0; i < this.data.length; i++) {
         if (this.favoriteCircleIds.includes(this.data[i].circle_id)) {
           this.data[i].isFavorite = true
         } else {
