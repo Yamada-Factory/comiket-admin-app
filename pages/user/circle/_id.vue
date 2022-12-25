@@ -101,10 +101,17 @@
 
                       <div class="columns is-mobile is-1 is-multiline" v-if="images[eventIndex] && images[eventIndex].length">
                         <img
-                          :src="'https://s3-yamada-01.misosiru.men/comiket-app-dev' + image"
+                          :src="'https://s3-yamada-01.misosiru.men/comiket-app-dev' + image['url']"
                           alt="Placeholder image"
                           class="column is-6-mobile is-3-tablet is-2-desktop"
+                          @click="image['show'] = true"
                           v-for="(image, index) in images[eventIndex]" :key="index">
+
+                        <b-modal v-model="image['show']" v-for="(image, index) in images[eventIndex]" :key="index">
+                            <p class="image" style="width: auto; max-height: 100%;">
+                                <img :src="'https://s3-yamada-01.misosiru.men/comiket-app-dev' + image['url']" >
+                            </p>
+                        </b-modal>
                       </div>
                     </section>
                   </div>
@@ -235,12 +242,21 @@ export default {
       })
       event.info.images.forEach(image => {
         if (image.length) {
-          tmpImage.push(image)
+          tmpImage.push({
+            'url': image,
+            'show': false,
+          })
         } else if ('既定表示画像' in image && 'サムネイル画像' in image) {
           if (image['既定表示画像']) {
-            tmpImage.push(image['既定表示画像'])
+            tmpImage.push({
+              'url': image['既定表示画像'],
+              'show': false,
+            })
           } else if (image['サムネイル画像']) {
-            tmpImage.push(image['サムネイル画像'])
+            tmpImage.push({
+              'url': image['サムネイル画像'],
+              'show': false,
+            })
           }
         }
         images.push(tmpImage)
