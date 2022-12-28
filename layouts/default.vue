@@ -16,15 +16,12 @@
         <b-navbar-item href="/event/list">
           イベント一覧
         </b-navbar-item>
-        <b-navbar-item href="/user/circle/">
-          お気に入り
-        </b-navbar-item>
-        <b-navbar-dropdown label="Info">
-          <b-navbar-item href="#">
-            About
+        <b-navbar-dropdown label="お気に入り">
+          <b-navbar-item href="/user/circle/">
+            サークル一覧
           </b-navbar-item>
-          <b-navbar-item href="#">
-            Contact
+          <b-navbar-item href="/user/circle/event">
+            イベント一覧
           </b-navbar-item>
         </b-navbar-dropdown>
       </template>
