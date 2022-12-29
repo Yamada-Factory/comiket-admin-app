@@ -135,6 +135,12 @@
                 <b-field label="優先度" horizontal>
                   {{ props.row.priority }}
                 </b-field>
+                <b-field label="予算" horizontal>
+                  {{ props.row.price }}
+                </b-field>
+                <b-field label="コメント" horizontal>
+                  {{ props.row.comment }}
+                </b-field>
               </div>
             </div>
           </template>
