@@ -130,6 +130,20 @@
                     </b-field>
                   </div>
                 </div>
+                <div class="card-footer">
+                  <div class="card-footer-item">
+                    <b-field label="金額">
+                        <b-numberinput v-model="form[eventIndex].price" @input="updatePriority(eventIndex)"></b-numberinput>
+                    </b-field>
+                  </div>
+                  <div class="card-footer-item">
+                    <b-field>
+                      <b-input v-model="form[eventIndex].comment" @input="updatePriority(eventIndex)" type="textarea">
+                          通販フラグ
+                      </b-input>
+                    </b-field>
+                  </div>
+                </div>
               </div>
             </b-tab-item>
           </b-tabs>
@@ -216,6 +230,8 @@ export default {
         'priority': event.priority,
         'e-commerce_flag': event['e-commerce_flag'],
         'circle_id': this.circleId,
+        'price': event.price,
+        'comment': event.comment,
       })
       if (data.status) {
         return this.danger('更新失敗しました')
@@ -239,6 +255,8 @@ export default {
         'priority': event.priority,
         'e-commerce_flag': event['e-commerce_flag'],
         'event_id': event.id,
+        'price': event.price,
+        'comment': event.comment,
       })
       event.info.images.forEach(image => {
         if (image.length) {
