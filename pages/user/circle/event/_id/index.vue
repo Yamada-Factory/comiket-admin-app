@@ -36,6 +36,12 @@
                     {{ block }}
                   </option>
                 </b-select>
+                <b-select placeholder="スペース" v-model="search.space">
+                  <option value=""></option>
+                  <option v-for="(space, index) in spaces" :key="index">
+                    {{ space }}
+                  </option>
+                </b-select>
                 <b-select placeholder="優先度" v-model="search.sort_by_priority">
                   <option value="desc">優先度降順</option>
                   <option value="asc">優先度昇順</option>
@@ -176,6 +182,7 @@ export default {
       genres: [],
       halls: [],
       blocks: [],
+      spaces: [],
     }
   },
   async asyncData({ params, route, redirect }) {
@@ -196,9 +203,10 @@ export default {
     const genres = await Event.getGenre(params.id)
     const halls = await Event.getHall(params.id)
     const blocks = await Event.getBlock(params.id)
+    const spaces = await Event.getSpace(params.id)
 
 
-    return { params, data, page, genres, halls, blocks, search }
+    return { params, data, page, genres, halls, blocks, search, spaces }
   },
   methods: {
     isObject(value) {
