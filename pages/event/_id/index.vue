@@ -92,9 +92,83 @@
                 </a>
               </template>
             </footer>
+            <footer class="card-footer">
+              <b-button @click="circle.showModal = true" class="card-footer-item">詳細モーダル</b-button>
+            </footer>
             <footer class="card-footer" v-show="isAuth">
               <nuxt-link :to="`/user/circle/${circle.id}`" class="card-footer-item">詳細画面</nuxt-link>
             </footer>
+            <b-modal v-model="circle.showModal" :width="640" scroll="keep">
+              <div class="card">
+                <!-- <div class="card-image">
+                  <div class="card-image" v-if="circle.images && circle.images.length">
+                    <figure class="image">
+                      <img :src="'https://s3-yamada-01.misosiru.men/comiket-app-dev' + circle.images[0]" alt="Placeholder image">
+                    </figure>
+                  </div>
+                </div> -->
+                <div class="card-content">
+                  <div class="columns is-mobile is-3 is-multiline" v-if="circle.images && circle.images.length">
+                    <img
+                      :src="'https://s3-yamada-01.misosiru.men/comiket-app-dev' + image"
+                      alt="Placeholder image"
+                      class="column is-6-mobile is-3-tablet is-2-desktop"
+                      v-for="(image, index) in circle.images" :key="index">
+                  </div>
+
+                  <div class="content">
+                    <b-field label="サークル名">
+                      <!-- <b-input :value="data.author" readonly></b-input> -->
+                      <p>{{ circle.name }}</p>
+                    </b-field>
+
+                    <b-field label="作家">
+                      <p>{{ circle.author }}</p>
+                    </b-field>
+
+                    <b-field label="配置場所">
+                      <p>{{ circle.day }} {{ circle.hall }} {{ circle.bloack }} {{ circle.space }}</p>
+                    </b-field>
+
+                    <b-field label="ジャンル">
+                      <p>{{ circle.genre }}</p>
+                    </b-field>
+
+                    <b-field label="説明文">
+                      <p>{{ circle.description }}</p>
+                    </b-field>
+
+                    <b-field label="リンク">
+                      <b-taglist>
+                        <template v-for="link in circle.links">
+                          <b-tag v-if="link.url != null" :key="link.type" type="is-light">
+                            <a :href="link.url" target="__blank">
+                              <template v-if="link.type === 'twitter'">
+                                <b-icon icon="twitter"></b-icon>
+                              </template>
+                              <template v-else-if="link.type === 'pixiv'">
+                                <img src="https://cloud.githubusercontent.com/assets/10008301/5237429/1e89a588-78c6-11e4-92d4-aa57cb66957a.jpg">
+                              </template>
+                              <template v-else-if="link.type === 'nicon'">
+                                niconico
+                                <!-- <img src="https://e7.pngegg.com/pngimages/575/798/png-clipart-niconico-%E3%83%8B%E3%82%B3%E3%83%8B%E3%82%B3%E8%B6%85%E4%BC%9A%E8%AD%B0-%E3%83%8B%E3%82%B3%E3%83%8B%E3%82%B3%E7%94%9F%E6%94%BE%E9%80%81-%E5%8B%95%E7%94%BB-d%E1%BB%8Bch-v%E1%BB%A5-video-hosting-others-angle-white.png"> -->
+                              </template>
+                              <template v-else-if="link.type === 'clipstudio'">
+                                clipstudio
+                                <!-- <img class="is-small" src="https://cdn.icon-icons.com/icons2/3053/PNG/512/clip_studio_paint_macos_bigsur_icon_189480.png"> -->
+                              </template>
+                              <template v-else-if="link.type === 'website'">
+                                <b-icon icon="home"></b-icon>
+                              </template>
+                            </a>
+                          </b-tag>
+                        </template>
+                      </b-taglist>
+                    </b-field>
+                  </div>
+                </div>
+              </div>
+            </b-modal>
           </div>
         </div>
       </div>
@@ -150,6 +224,7 @@ export default {
       } else {
         data[i].isFavorite = false
       }
+      data[i].showModal = false
     }
 
 
