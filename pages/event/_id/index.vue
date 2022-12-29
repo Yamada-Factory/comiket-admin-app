@@ -92,6 +92,9 @@
                 </a>
               </template>
             </footer>
+            <footer class="card-footer" v-show="isAuth">
+              <nuxt-link :to="`/user/circle/${circle.id}`" class="card-footer-item">詳細画面</nuxt-link>
+            </footer>
           </div>
         </div>
       </div>
