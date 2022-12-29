@@ -36,6 +36,12 @@
                     {{ block }}
                   </option>
                 </b-select>
+                <b-select placeholder="スペース" v-model="search.space">
+                  <option value=""></option>
+                  <option v-for="(space, index) in spaces" :key="index">
+                    {{ space }}
+                  </option>
+                </b-select>
               </b-field>
             </div>
           </div>
@@ -86,6 +92,9 @@
                 </a>
               </template>
             </footer>
+            <footer class="card-footer" v-show="isAuth">
+              <nuxt-link :to="`/user/circle/${circle.id}`" class="card-footer-item">詳細画面</nuxt-link>
+            </footer>
           </div>
         </div>
       </div>
@@ -119,6 +128,7 @@ export default {
       genres: [],
       halls: [],
       blocks: [],
+      spaces: [],
     }
   },
   async asyncData({ route, params }) {
@@ -163,8 +173,9 @@ export default {
     const genres = await Event.getGenre(params.id)
     const halls = await Event.getHall(params.id)
     const blocks = await Event.getBlock(params.id)
+    const spaces = await Event.getSpace(params.id)
 
-    return { data, page, favorite, favoriteCircleIds, eventId, search, genres, halls, blocks }
+    return { data, page, favorite, favoriteCircleIds, eventId, search, genres, halls, blocks, spaces }
   },
   methods: {
     async refreshFavorite() {
