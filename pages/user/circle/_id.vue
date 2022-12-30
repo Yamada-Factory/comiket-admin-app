@@ -88,7 +88,7 @@
                       </b-field>
 
                       <b-field label="配置場所">
-                        <p>{{ event.info.day }} {{ event.info.hall }} {{ event.info.bloack }} {{ event.info.space }}</p>
+                        <p>{{ event.info.day }} {{ event.info.hall }} {{ event.info.block }} {{ event.info.space }}</p>
                       </b-field>
 
                       <b-field label="ジャンル">

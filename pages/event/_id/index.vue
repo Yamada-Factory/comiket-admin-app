@@ -127,7 +127,7 @@
                     </b-field>
 
                     <b-field label="配置場所">
-                      <p>{{ circle.day }} {{ circle.hall }} {{ circle.bloack }} {{ circle.space }}</p>
+                      <p>{{ circle.day }} {{ circle.hall }} {{ circle.block }} {{ circle.space }}</p>
                     </b-field>
 
                     <b-field label="ジャンル">
